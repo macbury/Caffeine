@@ -13,7 +13,7 @@
   roles:
     - aeimer.install_bat
   tasks:
-    # Install duf from https://github.com/muesli/duf
+    # Install duf for inspecting  from https://github.com/muesli/duf
     - name: Check if duf is installed
       command: dpkg-query -W duf
       register: duf_check_deb
@@ -24,7 +24,10 @@
         url="https://github.com/muesli/duf/releases/download/v{{ duf_version }}/duf_{{ duf_version }}_linux_amd64.deb"
         dest="/tmp/duff.deb"
       when: duf_check_deb.rc == 1
-    - name: "Install duf package"
+    - name: "Install duf package for inspecting disk usage"
       become: yes
       apt: deb="/tmp/duff.deb"
       when: duf_check_deb.rc == 1
+    - name: Install neofetch
+      apt:
+        name: neofetch

@@ -1,0 +1,26 @@
+- hosts:
+    - all
+    - localhost
+  become: yes
+  tasks:
+    - name: include vars from ../vars.yml
+      include_vars:
+        file: ../vars.yml
+
+- hosts:
+    - all
+    - localhost
+  become: yes
+  tasks:
+    - name: Install tmux
+      apt:
+        name: tmux
+    - name: mkdir ~/.tmux/plugins
+      file:
+        path: "{{tmux_tpm_plugins_path}}"
+        state: directory
+    - name: Clone the tpm repository
+      git:
+        repo: "{{tmux_tpm_repo}}"
+        dest: "{{tmux_tpm_plugins_path}}/tpm"
+        version: "{{tmux_tpm_version}}"

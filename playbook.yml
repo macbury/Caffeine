@@ -1,2 +1,5 @@
+- name: Install and configure tmux
+  import_playbook: playbooks/tmux.yaml
+
 - name: Basic tools
   import_playbook: playbooks/tools.yaml
