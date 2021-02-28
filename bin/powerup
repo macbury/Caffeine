@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+COMMAND=${1}
+shift 1
+COMMAND_ARGS=${@}
+
+function provision_command_help() {
+  echo "
+  ☢️  Computer Provisioner
+  $ bin/provision help                        - print this help message
+  $ bin/provision now                        - provision all servers
+"
+}
+
+function provision_validate_command() {
+  if [ "$(type -t provision_command_${COMMAND})" = function ]; then
+    return 0
+  else
+    echo "Unknown command: ${COMMAND}"
+    provision_command_help
+    return 1
+  fi
+}
+
+function provision_execute_command() {
+  if ! provision_validate_command; then
+    return 1
+  fi
+  provision_command_${COMMAND} ${COMMAND_ARGS}
+  return $?
+}
+
+
+function provision_command_now() {
+  ansible-galaxy install -r external_roles.yml;
+  ansible-playbook --ssh-common-args="-o ForwardAgent=yes" playbook.yml -i inventory.ini
+}
+
+
+function main() {
+  if ! provision_execute_command; then
+    return 1
+  fi
+}
+
+main

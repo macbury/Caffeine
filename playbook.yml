@@ -1,0 +1,2 @@
+- name: Basic tools
+  import_playbook: playbooks/tools.yaml

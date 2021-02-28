@@ -1,0 +1,30 @@
+- hosts:
+    - all
+    - localhost
+  become: yes
+  tasks:
+    - name: include vars from ../vars.yml
+      include_vars:
+        file: ../vars.yml
+
+- hosts:
+    - all
+    - localhost
+  roles:
+    - aeimer.install_bat
+  tasks:
+    # Install duf from https://github.com/muesli/duf
+    - name: Check if duf is installed
+      command: dpkg-query -W duf
+      register: duf_check_deb
+      failed_when: duf_check_deb.rc > 1
+      changed_when: duf_check_deb.rc == 1
+    - name: Download duf
+      get_url: 
+        url="https://github.com/muesli/duf/releases/download/v{{ duf_version }}/duf_{{ duf_version }}_linux_amd64.deb"
+        dest="/tmp/duff.deb"
+      when: duf_check_deb.rc == 1
+    - name: "Install duf package"
+      become: yes
+      apt: deb="/tmp/duff.deb"
+      when: duf_check_deb.rc == 1
