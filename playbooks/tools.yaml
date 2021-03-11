@@ -33,7 +33,7 @@
         pkg:
           - tree
           - neofetch
-          - fd-find
+          - fd-find # https://github.com/sharkdp/fd
 
     # Install exa for ls replacement  https://the.exa.website/#installation
     - name: Check if exa is installed
