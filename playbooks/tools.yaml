@@ -33,6 +33,7 @@
         pkg:
           - tree
           - neofetch
+          - fd-find
 
     # Install exa for ls replacement  https://the.exa.website/#installation
     - name: Check if exa is installed
@@ -61,3 +62,21 @@
       become: yes
       ansible.builtin.shell: 
         cmd: "chmod +x /usr/bin/exa"
+
+    # Install procs https://github.com/dalance/procs
+    - name: Check if procs is installed
+      command: which procs
+      register: check_procs
+      failed_when: check_procs.rc > 1
+      changed_when: check_procs.rc == 1
+    - name: Download procs
+      get_url: 
+        url: "https://github.com/dalance/procs/releases/download/v0.11.3/procs-v0.11.3-x86_64-lnx.zip"
+        dest: "/tmp/procs.zip"
+      when: check_procs.rc == 1
+    - name: "Install procs"
+      become: yes
+      ansible.builtin.unarchive:
+        src: /tmp/procs.zip
+        dest: /usr/bin/
+      when: check_procs.rc == 1
