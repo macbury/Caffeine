@@ -1,1 +1,2 @@
 - role: aeimer.install_bat
+- role: jaredhocutt.gnome_extensions

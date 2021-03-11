@@ -8,7 +8,8 @@ function provision_command_help() {
   echo "
   ☢️  Computer Provisioner
   $ bin/provision help                        - print this help message
-  $ bin/provision now                        - provision all servers
+  $ bin/provision now                         - provision all servers
+  $ bin/provision single <playbook/name>      - provision all servers using only one package
 "
 }
 
@@ -35,6 +36,12 @@ function provision_command_now() {
   ansible-galaxy install -r external_roles.yml;
   ansible-playbook --ssh-common-args="-o ForwardAgent=yes" playbook.yml -i inventory.ini
 }
+
+function provision_command_single() {
+  ansible-galaxy install -r external_roles.yml;
+  ansible-playbook --ssh-common-args="-o ForwardAgent=yes" playbooks/$COMMAND_ARGS.yaml -i inventory.ini
+}
+
 
 
 function main() {

@@ -1,0 +1,24 @@
+# https://odysee.com/@DistroTube:2/the-right-wallpaper-is-the-key-to-a:e
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: include vars from ../vars.yml
+      include_vars:
+        file: ../vars.yml
+
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: Install wallpapers
+      apt:
+        pkg:
+          - gnome-backgrounds
+          - mate-backgrounds
+          - plasma-workspace-wallpapers
+
+- hosts: localhost
+  roles:
+    - role: jaredhocutt.gnome_extensions
+      vars:
+        gnome_extension_ids:
+          - 1040 # https://extensions.gnome.org/extension/1040/random-wallpaper/

@@ -3,3 +3,6 @@
 
 - name: Basic tools
   import_playbook: playbooks/tools.yaml
+
+- name: Wallpaper
+  import_playbook: playbooks/wallpaper.yaml
